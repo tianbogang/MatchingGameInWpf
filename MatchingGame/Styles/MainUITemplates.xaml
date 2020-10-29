@@ -39,20 +39,4 @@
         </Setter>
     </Style>
 
-    <Style TargetType="Button" x:Key="CardButtonStyle">
-        <Setter Property="Height" Value="50" />
-        <Setter Property="Width" Value="50" />
-        <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Margin" Value="8,8,8,8" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border Name="Main_Part" BorderThickness="0" BorderBrush="{TemplateBinding Foreground}" Background="{TemplateBinding Background}" Padding="6">
-                        <ContentPresenter Content="{TemplateBinding Button.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
 </ResourceDictionary>

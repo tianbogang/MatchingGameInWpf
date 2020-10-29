@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MatchingGame.Views"
              xmlns:Core="clr-namespace:MatchingGame.Core;assembly=MatchingGame.Core"
              Background="LightGray"
              mc:Ignorable="d" 
@@ -11,35 +10,6 @@
              Loaded="UserControl_Loaded">
 
     <UserControl.Resources>
-        <Style x:Key="PlayingCardStyle" BasedOn="{StaticResource CardButtonStyle}" TargetType="Button">
-            <Setter Property="Content" Value="" />
-            <Setter Property="Background" Value="White" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=State}" Value="{x:Static Core:CardState.OpenGreen}">
-                    <Setter Property="Content" Value="{Binding Point}" />
-                    <Setter Property="Background" Value="Green" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Path=State}" Value="{x:Static Core:CardState.OpenRed}">
-                    <Setter Property="Content" Value="{Binding Point}" />
-                    <Setter Property="Background" Value="Red" />
-                    <Setter Property="IsEnabled" Value="False" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Path=State}" Value="{x:Static Core:CardState.Hidden}">
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="IsEnabled" Value="False" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        <DataTemplate x:Key="CardTemplateUno">
-            <Button Style="{StaticResource PlayingCardStyle}" TextElement.Foreground="White" TextElement.FontSize="14"
-                    Command="{Binding DataContext.ClickedCardOnUno, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                    CommandParameter="{Binding Point}"/>
-        </DataTemplate>
-        <DataTemplate x:Key="CardTemplateDue">
-            <Button Style="{StaticResource PlayingCardStyle}" TextElement.Foreground="White" TextElement.FontSize="14"
-                    Command="{Binding DataContext.ClickedCardOnDue, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                    CommandParameter="{Binding Point}"/>
-        </DataTemplate>
         <Style x:Key="PlayerFaceImageStyle" TargetType="Image">
             <Setter Property="Source" Value="/Images/Watch.png" />
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -53,6 +23,90 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+        <Style TargetType="Button" x:Key="ClosedCardButtonStyle">
+            <Setter Property="Width" Value="80" />
+            <Setter Property="Height" Value="100" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Margin" Value="8,8,8,8" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderThickness="4" BorderBrush="White" CornerRadius="4" Background="#458ca9" Padding="6" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Border" x:Key="CardBorderStyle">
+            <Setter Property="Width" Value="80" />
+            <Setter Property="Height" Value="100" />
+            <Setter Property="Margin" Value="8,8,8,8" />
+            <Setter Property="Margin" Value="8,8,8,8" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="OpenCardTextStyle">
+            <Setter Property="FontSize" Value="58" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- closed card on cardset 1 -->
+        <DataTemplate x:Key="ClosedCardUnoTemplate">
+            <Button Style="{StaticResource ClosedCardButtonStyle}" 
+                    Command="{Binding DataContext.ClickedCardOnUno, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                    CommandParameter="{Binding Point}"/>
+        </DataTemplate>
+        <!-- closed card on cardset 1 -->
+        <DataTemplate x:Key="ClosedCardDueTemplate">
+            <Button Style="{StaticResource ClosedCardButtonStyle}" 
+                    Command="{Binding DataContext.ClickedCardOnDue, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                    CommandParameter="{Binding Point}"/>
+        </DataTemplate>
+        <!-- open green card -->
+        <DataTemplate x:Key="OpenGreenCardTemplate">
+            <Border Style="{StaticResource CardBorderStyle}" Background="White">
+                <TextBlock Text="{Binding Point}" Style="{StaticResource OpenCardTextStyle}" Foreground="Green" />
+            </Border>
+        </DataTemplate>
+        <!-- open red card -->
+        <DataTemplate x:Key="OpenRedCardTemplate">
+            <Border Style="{StaticResource CardBorderStyle}" Background="White">
+                <TextBlock Text="{Binding Point}" Style="{StaticResource OpenCardTextStyle}" Foreground="Red" />
+            </Border>
+        </DataTemplate>
+        <!-- hidden (but take space) card -->
+        <DataTemplate x:Key="HiddenCardTemplate">
+            <Border Style="{StaticResource CardBorderStyle}" Background="Transparent" />
+        </DataTemplate>
+        
+        <Style TargetType="ContentPresenter" x:Key="CardsContentStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=State}" Value="{x:Static Core:CardState.OpenGreen}">
+                    <Setter Property="ContentTemplate" Value="{StaticResource OpenGreenCardTemplate}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=State}" Value="{x:Static Core:CardState.OpenRed}">
+                    <Setter Property="ContentTemplate" Value="{StaticResource OpenRedCardTemplate}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=State}" Value="{x:Static Core:CardState.Hidden}">
+                    <Setter Property="ContentTemplate" Value="{StaticResource HiddenCardTemplate}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ContentPresenter" BasedOn="{StaticResource CardsContentStyle}" x:Key="CardsUnoContentStyle">
+            <Setter Property="ContentTemplate" Value="{StaticResource ClosedCardUnoTemplate}" />
+        </Style>
+        <Style TargetType="ContentPresenter" BasedOn="{StaticResource CardsContentStyle}" x:Key="CardsDueContentStyle">
+            <Setter Property="ContentTemplate" Value="{StaticResource ClosedCardDueTemplate}" />
+        </Style>
+
+        <!-- item template for cardset 1 -->
+        <DataTemplate x:Key="CardTemplateUno">
+            <ContentPresenter Style="{StaticResource CardsUnoContentStyle}" Content="{Binding}" />
+        </DataTemplate>
+        <!-- item template for cardset 2 -->
+        <DataTemplate x:Key="CardTemplateDue">
+            <ContentPresenter Style="{StaticResource CardsDueContentStyle}" Content="{Binding}" />
+        </DataTemplate>
     </UserControl.Resources>
     
     <Grid>
@@ -76,7 +130,7 @@
         <ItemsControl Grid.Row="1" Margin="20,4,20,4" ItemsSource="{Binding Cardset1}" ItemTemplate="{StaticResource CardTemplateUno}" >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel IsItemsHost="True" Orientation="Horizontal" Background="LightGreen" />
+                    <WrapPanel IsItemsHost="True" Orientation="Horizontal" Background="#84d6ba" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
@@ -84,7 +138,7 @@
         <ItemsControl Grid.Row="2" Margin="20,4,20,4" ItemsSource="{Binding Cardset2}" ItemTemplate="{StaticResource CardTemplateDue}" >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel IsItemsHost="True" Orientation="Horizontal" Background="LightGreen" />
+                    <WrapPanel IsItemsHost="True" Orientation="Horizontal" Background="#84d6ba" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
