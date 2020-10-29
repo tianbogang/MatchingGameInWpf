@@ -44,6 +44,34 @@
             <Setter Property="Margin" Value="8,8,8,8" />
             <Setter Property="CornerRadius" Value="4" />
         </Style>
+        <Style TargetType="Border" BasedOn="{StaticResource CardBorderStyle}" x:Key="FlipCardBorderStyle">
+            <Setter Property="RenderTransformOrigin" Value="0.5, 0.5" />
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform />
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="-1" To="1" Duration="0:0:0.6" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Border" BasedOn="{StaticResource CardBorderStyle}" x:Key="FadeCardBorderStyle">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="Transparent" Duration="0:0:0.6" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
         <Style TargetType="TextBlock" x:Key="OpenCardTextStyle">
             <Setter Property="FontSize" Value="58" />
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -56,7 +84,7 @@
                     Command="{Binding DataContext.ClickedCardOnUno, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                     CommandParameter="{Binding Point}"/>
         </DataTemplate>
-        <!-- closed card on cardset 1 -->
+        <!-- closed card on cardset 2 -->
         <DataTemplate x:Key="ClosedCardDueTemplate">
             <Button Style="{StaticResource ClosedCardButtonStyle}" 
                     Command="{Binding DataContext.ClickedCardOnDue, RelativeSource={RelativeSource AncestorType=UserControl}}" 
@@ -64,19 +92,19 @@
         </DataTemplate>
         <!-- open green card -->
         <DataTemplate x:Key="OpenGreenCardTemplate">
-            <Border Style="{StaticResource CardBorderStyle}" Background="White">
+            <Border Style="{StaticResource FlipCardBorderStyle}" Background="White">
                 <TextBlock Text="{Binding Point}" Style="{StaticResource OpenCardTextStyle}" Foreground="Green" />
             </Border>
         </DataTemplate>
         <!-- open red card -->
         <DataTemplate x:Key="OpenRedCardTemplate">
-            <Border Style="{StaticResource CardBorderStyle}" Background="White">
+            <Border Style="{StaticResource FlipCardBorderStyle}" Background="White">
                 <TextBlock Text="{Binding Point}" Style="{StaticResource OpenCardTextStyle}" Foreground="Red" />
             </Border>
         </DataTemplate>
         <!-- hidden (but take space) card -->
         <DataTemplate x:Key="HiddenCardTemplate">
-            <Border Style="{StaticResource CardBorderStyle}" Background="Transparent" />
+            <Border Style="{StaticResource FadeCardBorderStyle}" Background="White" />
         </DataTemplate>
         
         <Style TargetType="ContentPresenter" x:Key="CardsContentStyle">
