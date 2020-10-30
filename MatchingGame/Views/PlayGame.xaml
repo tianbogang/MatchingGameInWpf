@@ -32,7 +32,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border BorderThickness="4" BorderBrush="White" CornerRadius="4" Background="#458ca9" Padding="6" />
+                        <Border BorderThickness="4" BorderBrush="White" CornerRadius="4" Background="#458ca9" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -41,7 +41,7 @@
             <Setter Property="Width" Value="80" />
             <Setter Property="Height" Value="100" />
             <Setter Property="Margin" Value="8,8,8,8" />
-            <Setter Property="Margin" Value="8,8,8,8" />
+            <Setter Property="BorderThickness" Value="0" />
             <Setter Property="CornerRadius" Value="4" />
         </Style>
         <Style TargetType="Border" BasedOn="{StaticResource CardBorderStyle}" x:Key="FlipCardBorderStyle">
