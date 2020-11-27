@@ -81,13 +81,13 @@
         <!-- closed card on cardset 1 -->
         <DataTemplate x:Key="ClosedCardUnoTemplate">
             <Button Style="{StaticResource ClosedCardButtonStyle}" 
-                    Command="{Binding DataContext.ClickedCardOnUno, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                    Command="{Binding DataContext.ClickedCardOnUno, RelativeSource={RelativeSource AncestorType=UserControl}, IsAsync=True}" 
                     CommandParameter="{Binding Point}"/>
         </DataTemplate>
         <!-- closed card on cardset 2 -->
         <DataTemplate x:Key="ClosedCardDueTemplate">
             <Button Style="{StaticResource ClosedCardButtonStyle}" 
-                    Command="{Binding DataContext.ClickedCardOnDue, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                    Command="{Binding DataContext.ClickedCardOnDue, RelativeSource={RelativeSource AncestorType=UserControl}, IsAsync=True}" 
                     CommandParameter="{Binding Point}"/>
         </DataTemplate>
         <!-- open green card -->
